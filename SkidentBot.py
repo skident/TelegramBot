@@ -1,6 +1,8 @@
 import requests
 import datetime
 from time import sleep
+from FuckingGreatAdvisor import FuckingGreatAdvice
+from EnglishWords import WordList
 
 # url = "https://api.telegram.org/bot728208585:AAGL1Bx8UX_8s1_II8cF9DUlVT30r_X2WQI/"
 
@@ -35,30 +37,25 @@ class BotHandler:
 
         return last_update
 
-class FuckingGreatAdvice:
-    def __init__(self):
-        self.api_url = "http://fucking-great-advice.ru/api/random"
-
-    def get_advise(self):
-        resp = requests.get(self.api_url)
-        result_json = resp.json()
-        # print("[resonse for get updates]: ", result_json)
-        return result_json['text']
-
-
-token = '728208585:AAGL1Bx8UX_8s1_II8cF9DUlVT30r_X2WQI'
-greet_bot = BotHandler(token)
-greetings = ('hello', 'hi', 'greetings', 'sup')
-get_advice = ('/advice', '/advice@skidentbot')
-now = datetime.datetime.now()
-
 
 def main():
+    token = '728208585:AAGL1Bx8UX_8s1_II8cF9DUlVT30r_X2WQI'
+    greet_bot = BotHandler(token)
+
+    greetings = ('hello', 'hi', 'greetings', 'sup')
+    get_advice = ('/advice', '/advice@skidentbot')
+    get_eng_word = ('/word', '/word@skidentbot')
+
+    now = datetime.datetime.now()
+
+
     new_offset = None
     today = now.day
     hour = now.hour
 
+
     fucking_advicer = FuckingGreatAdvice()
+    word_list = WordList()
 
 
     while True:
@@ -85,30 +82,14 @@ def main():
                 advice_text = fucking_advicer.get_advise()
                 greet_bot.send_message(last_chat_id, advice_text)
 
-            # print (advice_text)
-
-            # if last_chat_text.lower() in greetings and today == now.day and 6 <= hour < 12:
-            #     greet_bot.send_message(last_chat_id, 'Good Morning  {}'.format(last_chat_name))
-            #     # today += 1
-            #
-            # elif last_chat_text.lower() in greetings and today == now.day and 12 <= hour < 17:
-            #     greet_bot.send_message(last_chat_id, 'Good Afternoon {}'.format(last_chat_name))
-            #     # today += 1
-            #
-            # elif last_chat_text.lower() in greetings and today == now.day and 17 <= hour < 23:
-            #     greet_bot.send_message(last_chat_id, 'Good Evening  {}'.format(last_chat_name))
-            #     # today += 1
-            #
-            # else:
-            #     greet_bot.send_message(last_chat_id, 'Unknown command {}'.format(last_chat_name))
-            #     # today += 1
+            elif last_chat_text.lower() in get_eng_word:
+                word = word_list.get_random()
+                greet_bot.send_message(last_chat_id, word)
 
             new_offset = last_update_id + 1
         except:
             sleep(1)
-        #     new_offset = 0
-            # print ("continue")
-            # continue
+
 
 if __name__ == '__main__':
     try:
