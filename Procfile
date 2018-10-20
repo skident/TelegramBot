@@ -1,1 +1,2 @@
-web: python SkidentBot.py
+release: python SkidentBot.py
+web: gunicorn gettingstarted.wsgi --log-file -
