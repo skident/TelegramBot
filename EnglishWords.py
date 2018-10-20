@@ -5,25 +5,24 @@ class WordList:
     def __init__(self):
         self.file_name = 'Resources/words.txt'
         self.array = []
-        self.open()
+        self.__open()
 
-    def open(self):
-        with open(self.file_name, "r") as ins:
-            # i = 0
+    def __nonblank_lines(self, f):
+        for l in f:
+            line = l.rstrip()
+            if line:
+                yield line
 
-            for line in ins:
-                # i += 1
+    def __open(self):
+        with open(self.file_name, "r") as f_in:
+            for line in self.__nonblank_lines(f_in):
                 if line != "\n" and line != "" and "Day #" not in line:
                     self.array.append(line)
-                    # print (line, len(self.array))
-
-                # if i >= 20:
-                #     break
+                    # print (line)
 
     def get_random(self):
-        # for x in range(10):
         array_size = len(self.array)
-        print ("size: ", array_size)
+        # print ("size: ", array_size)
         index = random.randint(0, array_size)
         # return index
         return self.array[index]
