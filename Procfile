@@ -1,1 +1,1 @@
-web: python TelegramBot/SkidentBot.py
+web: python SkidentBot.py
