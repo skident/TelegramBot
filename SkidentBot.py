@@ -4,8 +4,6 @@ from time import sleep
 from FuckingGreatAdvisor import FuckingGreatAdvice
 from EnglishWords import WordList
 
-# url = "https://api.telegram.org/bot728208585:AAGL1Bx8UX_8s1_II8cF9DUlVT30r_X2WQI/"
-
 class BotHandler:
     def __init__(self, token):
         self.token = token
@@ -39,7 +37,7 @@ class BotHandler:
 
 
 def main():
-    token = '{token}'
+    token = '{}'
     greet_bot = BotHandler(token)
 
     greetings = ('hello', 'hi', 'greetings', 'sup')
@@ -67,10 +65,6 @@ def main():
 
             print ("Last update:", last_update['message'])
 
-            # if 'text' not in last_update['message']:
-            #     print ("text not found")
-            #     continue
-
             last_update_id = last_update['update_id']
             last_chat_text = last_update['message']['text']
             last_chat_id = last_update['message']['chat']['id']
@@ -87,16 +81,15 @@ def main():
                 greet_bot.send_message(last_chat_id, word)
 
             new_offset = last_update_id + 1
+
         except:
+            print ("exception caught")
             sleep(1)
 
 
 if __name__ == '__main__':
     try:
         main()
-        # fucking_advicer = FuckingGreatAdvice()
-        # advice_text = fucking_advicer.get_advise()
-        # print (advice_text)
 
     except KeyboardInterrupt:
         exit()
