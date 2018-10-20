@@ -15,7 +15,7 @@ class BotHandler:
         params = {'timeout': timeout, 'offset': offset}
         resp = requests.get(self.api_url + method, params)
         result_json = resp.json()['result']
-        print("[resonse for get updates]: ", result_json)
+        # print("[resonse for get updates]: ", result_json)
         return result_json
 
     def send_message(self, chat_id, text):
@@ -35,9 +35,21 @@ class BotHandler:
 
         return last_update
 
+class FuckingGreatAdvice:
+    def __init__(self):
+        self.api_url = "http://fucking-great-advice.ru/api/random"
+
+    def get_advise(self):
+        resp = requests.get(self.api_url)
+        result_json = resp.json()
+        # print("[resonse for get updates]: ", result_json)
+        return result_json['text']
+
+
 token = '728208585:AAGL1Bx8UX_8s1_II8cF9DUlVT30r_X2WQI'
 greet_bot = BotHandler(token)
 greetings = ('hello', 'hi', 'greetings', 'sup')
+get_advice = ('/advice', '/advice@skidentbot')
 now = datetime.datetime.now()
 
 
@@ -46,36 +58,63 @@ def main():
     today = now.day
     hour = now.hour
 
+    fucking_advicer = FuckingGreatAdvice()
+
+
     while True:
-        greet_bot.get_updates(new_offset)
+        # try:
+            greet_bot.get_updates(new_offset)
 
-        last_update = greet_bot.get_last_update()
+            last_update = greet_bot.get_last_update()
+            # print (last_update)
 
-        last_update_id = last_update['update_id']
-        last_chat_text = last_update['message']['text']
-        last_chat_id = last_update['message']['chat']['id']
-        last_chat_name = last_update['message']['chat']['first_name']
+            print ("Last update:", last_update['message'])
 
-        if last_chat_text.lower() in greetings and today == now.day and 6 <= hour < 12:
-            greet_bot.send_message(last_chat_id, 'Good Morning  {}'.format(last_chat_name))
-            # today += 1
+            # if 'text' not in last_update['message']:
+            #     print ("text not found")
+            #     continue
 
-        elif last_chat_text.lower() in greetings and today == now.day and 12 <= hour < 17:
-            greet_bot.send_message(last_chat_id, 'Good Afternoon {}'.format(last_chat_name))
-            # today += 1
+            last_update_id = last_update['update_id']
+            last_chat_text = last_update['message']['text']
+            last_chat_id = last_update['message']['chat']['id']
+            # last_chat_name = last_update['message']['chat']['first_name']
 
-        elif last_chat_text.lower() in greetings and today == now.day and 17 <= hour < 23:
-            greet_bot.send_message(last_chat_id, 'Good Evening  {}'.format(last_chat_name))
-            # today += 1
+            print('chat text:', last_chat_text)
 
-        else:
-            greet_bot.send_message(last_chat_id, 'Unknown command {}'.format(last_chat_name))
-            # today += 1
+            if last_chat_text.lower() in get_advice:
+                advice_text = fucking_advicer.get_advise()
+                greet_bot.send_message(last_chat_id, advice_text)
 
-        new_offset = last_update_id + 1
+            # print (advice_text)
+
+            # if last_chat_text.lower() in greetings and today == now.day and 6 <= hour < 12:
+            #     greet_bot.send_message(last_chat_id, 'Good Morning  {}'.format(last_chat_name))
+            #     # today += 1
+            #
+            # elif last_chat_text.lower() in greetings and today == now.day and 12 <= hour < 17:
+            #     greet_bot.send_message(last_chat_id, 'Good Afternoon {}'.format(last_chat_name))
+            #     # today += 1
+            #
+            # elif last_chat_text.lower() in greetings and today == now.day and 17 <= hour < 23:
+            #     greet_bot.send_message(last_chat_id, 'Good Evening  {}'.format(last_chat_name))
+            #     # today += 1
+            #
+            # else:
+            #     greet_bot.send_message(last_chat_id, 'Unknown command {}'.format(last_chat_name))
+            #     # today += 1
+
+            new_offset = last_update_id + 1
+        # except:
+        #     new_offset = 0
+            # print ("continue")
+            # continue
 
 if __name__ == '__main__':
     try:
         main()
+        # fucking_advicer = FuckingGreatAdvice()
+        # advice_text = fucking_advicer.get_advise()
+        # print (advice_text)
+
     except KeyboardInterrupt:
         exit()
