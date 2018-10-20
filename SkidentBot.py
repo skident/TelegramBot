@@ -62,7 +62,7 @@ def main():
 
 
     while True:
-        # try:
+        try:
             greet_bot.get_updates(new_offset)
 
             last_update = greet_bot.get_last_update()
@@ -104,7 +104,8 @@ def main():
             #     # today += 1
 
             new_offset = last_update_id + 1
-        # except:
+        except:
+            sleep(1)
         #     new_offset = 0
             # print ("continue")
             # continue
