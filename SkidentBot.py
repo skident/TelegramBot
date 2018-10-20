@@ -39,7 +39,7 @@ class BotHandler:
 
 
 def main():
-    token = '728208585:AAGL1Bx8UX_8s1_II8cF9DUlVT30r_X2WQI'
+    token = '{token}'
     greet_bot = BotHandler(token)
 
     greetings = ('hello', 'hi', 'greetings', 'sup')
